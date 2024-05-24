@@ -19,6 +19,8 @@ type Profile struct {
 	Mode string `json:"mode"`
 	// Addr is the binding address for server
 	Addr string `json:"-"`
+	// Baseuri is the base uri for server
+	Baseuri string `json:"-"`
 	// Port is the binding port for server
 	Port int `json:"-"`
 	// Data is the data directory

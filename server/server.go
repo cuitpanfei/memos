@@ -64,7 +64,7 @@ func NewServer(ctx context.Context, profile *profile.Profile, store *store.Store
 	// Serve frontend resources.
 	frontend.NewFrontendService(profile, store).Serve(ctx, echoServer)
 
-	rootGroup := echoServer.Group("")
+	rootGroup := echoServer.Group(s.Profile.Baseuri)
 
 	// Create and register RSS routes.
 	rss.NewRSSService(s.Profile, s.Store).RegisterRoutes(rootGroup)

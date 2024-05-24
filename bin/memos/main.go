@@ -32,6 +32,7 @@ const (
 var (
 	mode            string
 	addr            string
+	baseuri         string
 	port            int
 	data            string
 	driver          string
@@ -104,6 +105,7 @@ func init() {
 	cobra.OnInitialize(initConfig)
 
 	rootCmd.PersistentFlags().StringVarP(&mode, "mode", "m", "demo", `mode of server, can be "prod" or "dev" or "demo"`)
+	rootCmd.PersistentFlags().StringVarP(&addr, "baseuri", "b", "memos", "baseuri for server")
 	rootCmd.PersistentFlags().StringVarP(&addr, "addr", "a", "", "address of server")
 	rootCmd.PersistentFlags().IntVarP(&port, "port", "p", 8081, "port of server")
 	rootCmd.PersistentFlags().StringVarP(&data, "data", "d", "", "data directory")
@@ -115,6 +117,10 @@ func init() {
 		panic(err)
 	}
 	err = viper.BindPFlag("addr", rootCmd.PersistentFlags().Lookup("addr"))
+	if err != nil {
+		panic(err)
+	}
+	err = viper.BindPFlag("baseuri", rootCmd.PersistentFlags().Lookup("baseuri"))
 	if err != nil {
 		panic(err)
 	}
@@ -137,6 +143,7 @@ func init() {
 
 	viper.SetDefault("mode", "demo")
 	viper.SetDefault("driver", "sqlite")
+	viper.SetDefault("baseuri", "")
 	viper.SetDefault("addr", "")
 	viper.SetDefault("port", 8081)
 	viper.SetEnvPrefix("memos")
@@ -156,20 +163,21 @@ Server profile
 version: %s
 data: %s
 dsn: %s
+baseuri: %s
 addr: %s
 port: %d
 mode: %s
 driver: %s
 ---
-`, instanceProfile.Version, instanceProfile.Data, instanceProfile.DSN, instanceProfile.Addr, instanceProfile.Port, instanceProfile.Mode, instanceProfile.Driver)
+`, instanceProfile.Version, instanceProfile.Data, instanceProfile.DSN, instanceProfile.Baseuri, instanceProfile.Addr, instanceProfile.Port, instanceProfile.Mode, instanceProfile.Driver)
 }
 
 func printGreetings() {
 	print(greetingBanner)
 	if len(instanceProfile.Addr) == 0 {
-		fmt.Printf("Version %s has been started on port %d\n", instanceProfile.Version, instanceProfile.Port)
+		fmt.Printf("Version %s has been started on port %d, baseuri: %s\n", instanceProfile.Version, instanceProfile.Port, instanceProfile.Baseuri)
 	} else {
-		fmt.Printf("Version %s has been started on address '%s' and port %d\n", instanceProfile.Version, instanceProfile.Addr, instanceProfile.Port)
+		fmt.Printf("Version %s has been started on address '%s' and port %d, baseuri: %s\n", instanceProfile.Version, instanceProfile.Addr, instanceProfile.Port, instanceProfile.Baseuri)
 	}
 	fmt.Printf(`---
 See more in:
