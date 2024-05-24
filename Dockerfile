@@ -6,9 +6,11 @@ COPY . .
 
 WORKDIR /frontend-build/web
 
+# ENV VITE_APP_BASE="memos"
+
 RUN corepack enable && pnpm i --frozen-lockfile
 
-RUN pnpm build
+RUN export VITE_APP_BASE="/1memos" && pnpm build
 
 # Build backend exec file.
 FROM golang:1.22-alpine AS backend
@@ -36,5 +38,6 @@ VOLUME /var/opt/memos
 
 ENV MEMOS_MODE="prod"
 ENV MEMOS_PORT="5230"
+ENV VITE_APP_BASE="/1memos"
 
 ENTRYPOINT ["./memos"]

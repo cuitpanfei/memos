@@ -11,6 +11,7 @@ if (process.env.DEV_PROXY_SERVER && process.env.DEV_PROXY_SERVER.length > 0) {
 // https://vitejs.dev/config/
 export default defineConfig({
   plugins: [react()],
+  base: process.env.VITE_APP_BASE || '',
   server: {
     host: "0.0.0.0",
     port: 3001,
