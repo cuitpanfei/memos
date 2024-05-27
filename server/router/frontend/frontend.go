@@ -5,6 +5,7 @@ import (
 	"embed"
 	"fmt"
 	"io/fs"
+	"mime"
 	"net/http"
 	"strings"
 
@@ -43,6 +44,8 @@ func (s *FrontendService) Serve(ctx context.Context, e *echo.Echo) {
 	skipper := func(c echo.Context) bool {
 		return util.HasPrefixes(c.Path(), "/o", "/api", "/memos.api.v1", "/robots.txt", "/sitemap.xml", "/m/:name")
 	}
+	mime.AddExtensionType(".js", "text/javascript; charset=utf-8")
+	mime.AddExtensionType(".css", "text/css; charset=utf-8")
 
 	// Use echo static middleware to serve the built dist folder.
 	// Reference: https://github.com/labstack/echo/blob/master/middleware/static.go

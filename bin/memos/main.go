@@ -143,7 +143,7 @@ func init() {
 
 	viper.SetDefault("mode", "demo")
 	viper.SetDefault("driver", "sqlite")
-	viper.SetDefault("baseuri", "")
+	viper.SetDefault("baseuri", "memos")
 	viper.SetDefault("addr", "")
 	viper.SetDefault("port", 8081)
 	viper.SetEnvPrefix("memos")
